@@ -9,6 +9,21 @@ export type Place = {
   imageUrl: string;
 };
 
+export const VIBE_EMOJI: Record<string, string> = {
+  aesthetic: '📸',
+  indie: '🕯️',
+  'study-friendly': '📖',
+  'late-night': '🌙',
+  brunch: '🍳',
+  'pet-friendly': '🐾',
+};
+
+export const SPEND_SYMBOL: Record<Spend, string> = {
+  cheap: '₹',
+  mid: '₹₹',
+  splurge: '₹₹₹',
+};
+
 export const PLACES: Place[] = [
   {
     id: '1',

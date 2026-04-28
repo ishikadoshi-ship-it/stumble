@@ -1,28 +1,24 @@
 import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import type { Place, Spend } from '@/constants/places';
-
-const SPEND_LABEL: Record<Spend, string> = {
-  cheap: '₹',
-  mid: '₹₹',
-  splurge: '₹₹₹',
-};
+import { SPEND_SYMBOL, type Place } from '@/constants/places';
+import { Stumble } from '@/constants/theme';
 
 export function PlaceCard({ place }: { place: Place }) {
   return (
-    <ThemedView style={styles.card}>
+    <View style={styles.card}>
       <Image source={place.imageUrl} style={styles.image} contentFit="cover" />
-      <View style={styles.body}>
-        <View style={styles.headerRow}>
-          <ThemedText type="defaultSemiBold" style={styles.name}>
-            {place.name}
-          </ThemedText>
-          <ThemedText style={styles.spend}>{SPEND_LABEL[place.spend]}</ThemedText>
-        </View>
-        <ThemedText style={styles.neighborhood}>{place.neighborhood}</ThemedText>
+      <LinearGradient
+        colors={['transparent', 'rgba(10,10,10,0.55)', 'rgba(10,10,10,0.95)']}
+        locations={[0, 0.5, 1]}
+        style={styles.gradient}
+      />
+
+      <ThemedText style={styles.spend}>{SPEND_SYMBOL[place.spend]}</ThemedText>
+
+      <View style={styles.bottom}>
         <View style={styles.tagRow}>
           {place.vibeTags.map((tag) => (
             <View key={tag} style={styles.tag}>
@@ -30,52 +26,72 @@ export function PlaceCard({ place }: { place: Place }) {
             </View>
           ))}
         </View>
+        <ThemedText style={styles.name}>{place.name}</ThemedText>
+        <ThemedText style={styles.neighborhood}>{place.neighborhood}</ThemedText>
       </View>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
+    width: '100%',
+    aspectRatio: 4 / 5,
+    borderRadius: 12,
     overflow: 'hidden',
-    marginBottom: 16,
+    backgroundColor: Stumble.surface,
   },
   image: {
-    width: '100%',
-    height: 180,
+    ...StyleSheet.absoluteFillObject,
   },
-  body: {
-    padding: 12,
-    gap: 6,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  name: {
-    fontSize: 18,
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
   },
   spend: {
-    opacity: 0.7,
+    position: 'absolute',
+    top: 14,
+    right: 16,
+    color: Stumble.accent,
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 14,
+    letterSpacing: 0.5,
   },
-  neighborhood: {
-    opacity: 0.7,
+  bottom: {
+    position: 'absolute',
+    left: 18,
+    right: 18,
+    bottom: 18,
+    gap: 8,
   },
   tagRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
-    marginTop: 4,
+    marginBottom: 4,
   },
   tag: {
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 999,
-    backgroundColor: 'rgba(127,127,127,0.2)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
   },
   tagText: {
+    fontSize: 10,
+    color: Stumble.text,
+    fontFamily: 'DMSans_500Medium',
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+  },
+  name: {
+    color: Stumble.text,
+    fontFamily: 'PlayfairDisplay_700Bold',
+    fontSize: 28,
+    lineHeight: 32,
+  },
+  neighborhood: {
+    color: Stumble.textMuted,
+    fontFamily: 'DMSans_400Regular',
     fontSize: 12,
+    letterSpacing: 0.4,
   },
 });

@@ -1,34 +1,55 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Stumble } from '@/constants/theme';
+
+type IconName = keyof typeof Ionicons.glyphMap;
+
+function TabIcon({ name, focused }: { name: IconName; focused: boolean }) {
+  return (
+    <Ionicons
+      name={name}
+      size={22}
+      color={focused ? Stumble.accent : Stumble.inactive}
+    />
+  );
+}
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: Stumble.bg,
+          borderTopColor: Stumble.navBorder,
+          borderTopWidth: 1,
+          height: 60,
+        },
       }}>
       <Tabs.Screen
         name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
+        options={{ tabBarIcon: ({ focused }) => <TabIcon name="home" focused={focused} /> }}
       />
       <Tabs.Screen
         name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
+        options={{ tabBarIcon: ({ focused }) => <TabIcon name="compass" focused={focused} /> }}
+      />
+      <Tabs.Screen
+        name="map"
+        options={{ tabBarIcon: ({ focused }) => <TabIcon name="map" focused={focused} /> }}
+      />
+      <Tabs.Screen
+        name="saved"
+        options={{ tabBarIcon: ({ focused }) => <TabIcon name="bookmark" focused={focused} /> }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{ tabBarIcon: ({ focused }) => <TabIcon name="person" focused={focused} /> }}
       />
     </Tabs>
   );
