@@ -42,6 +42,7 @@ export default function RootLayout() {
     <ThemeProvider value={StumbleNavTheme}>
       <Stack screenOptions={{ contentStyle: { backgroundColor: Stumble.bg } }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="place/[id]" options={{ headerShown: false }} />
         <Stack.Screen
           name="modal"
           options={{ presentation: 'modal', title: 'Modal', contentStyle: { backgroundColor: Stumble.surface } }}
