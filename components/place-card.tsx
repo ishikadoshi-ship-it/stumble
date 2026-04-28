@@ -1,14 +1,18 @@
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { SPEND_SYMBOL, type Place } from '@/constants/places';
 import { Stumble } from '@/constants/theme';
 
 export function PlaceCard({ place }: { place: Place }) {
+  const router = useRouter();
   return (
-    <View style={styles.card}>
+    <Pressable
+      onPress={() => router.push(`/place/${place.id}`)}
+      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}>
       <Image source={place.imageUrl} style={styles.image} contentFit="cover" />
       <LinearGradient
         colors={['transparent', 'rgba(10,10,10,0.55)', 'rgba(10,10,10,0.95)']}
@@ -29,7 +33,7 @@ export function PlaceCard({ place }: { place: Place }) {
         <ThemedText style={styles.name}>{place.name}</ThemedText>
         <ThemedText style={styles.neighborhood}>{place.neighborhood}</ThemedText>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -40,6 +44,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: Stumble.surface,
+  },
+  cardPressed: {
+    opacity: 0.85,
   },
   image: {
     ...StyleSheet.absoluteFillObject,
